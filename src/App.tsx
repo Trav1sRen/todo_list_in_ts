@@ -1,5 +1,5 @@
 import './App.css';
-import {createContext, Dispatch, SetStateAction, useState} from 'react';
+import React, {createContext, Dispatch, SetStateAction, useState} from 'react';
 import Header from "./components/Header";
 import List from "./components/List";
 import Footer from "./components/Footer";
@@ -15,7 +15,8 @@ export const TodoContext = createContext<{
     setTodo: Dispatch<SetStateAction<TodoType[]>>
 }>({
         todos: [],
-        setTodo: () => {}
+        setTodo: () => {
+        }
     }
 );
 

@@ -1,7 +1,7 @@
 import './index.css';
 import {nanoid} from "nanoid";
 import {TodoContext} from "../../App";
-import {KeyboardEvent, useContext} from 'react';
+import React, {KeyboardEvent, useContext} from 'react';
 
 const Header = () => {
     const {setTodo} = useContext(TodoContext);

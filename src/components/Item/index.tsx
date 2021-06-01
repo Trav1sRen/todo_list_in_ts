@@ -1,5 +1,5 @@
 import {TodoContext, TodoType} from "../../App";
-import {ChangeEvent, useContext, useState} from "react";
+import React, {ChangeEvent, useContext, useState} from "react";
 import "./index.css";
 
 const Item = ({id, name, done}: TodoType) => {
