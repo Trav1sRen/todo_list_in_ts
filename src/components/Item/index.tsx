@@ -7,7 +7,7 @@ const Item = ({id, name, done}: TodoType) => {
     const [mouseState, setMouseState] = useState<boolean>();
 
     const handleMouse = (flag: boolean) =>
-        () => setMouseState(() => flag);
+        () => setMouseState(flag);
 
     const handleCheck = (id: string) =>
         (event: ChangeEvent<HTMLInputElement>) => {
@@ -20,17 +20,16 @@ const Item = ({id, name, done}: TodoType) => {
 
     const handleClick = (id: string) =>
         () => {
-            setTodo(todos => {
-                const idx = todos.findIndex(todo => todo.id === id);
-                return [...todos.slice(0, idx), ...todos.slice(idx + 1)];
-            });
+            if(window.confirm('Are u sure to delete this Todo?')) {
+                setTodo(todos => todos.filter(todo => todo.id !== id));
+            }
         }
 
     return (
         <li style={{backgroundColor: mouseState ? '#ddd' : 'white'}} onMouseLeave={handleMouse(false)}
             onMouseEnter={handleMouse(true)}>
             <label>
-                <input onChange={handleCheck(id)} type="checkbox" defaultChecked={done}/>
+                <input onChange={handleCheck(id)} type="checkbox" checked={done}/>
                 <span>{name}</span>
             </label>
             <button onClick={handleClick(id)} className="btn btn-danger"

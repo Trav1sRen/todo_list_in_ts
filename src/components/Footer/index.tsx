@@ -5,13 +5,12 @@ import {TodoContext} from "../../App";
 const Footer = () => {
     const {todos, setTodo} = useContext(TodoContext);
 
-    const handleCheck = (event: ChangeEvent<HTMLInputElement>) => {
-        const allChecked = event.target.checked;
-        setTodo(todos => todos.map(todo => {
-            todo.done = allChecked;
-            return todo;
-        }));
-    }
+    const handleCheck = (event: ChangeEvent<HTMLInputElement>) =>
+        setTodo(todos =>
+            todos.map(todo => {
+                return {...todo, done: event.target.checked}
+            }));
+
 
     const handleClick = () => {
         setTodo(todos => todos.filter(todo => !todo.done));
@@ -20,7 +19,9 @@ const Footer = () => {
     return (
         <div className="todo-footer">
             <label>
-                <input onChange={handleCheck} type="checkbox"/>
+                <input checked={todos.length !== 0 && todos.length === todos.filter(todo => todo.done).length}
+                       onChange={handleCheck}
+                       type="checkbox"/>
             </label>
             <span>
                 <span>Done: {todos.filter(todo => todo.done).length}</span> / All: {todos.length}
