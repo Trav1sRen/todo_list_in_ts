@@ -14,7 +14,7 @@ const Item = ({id, name, done}: TodoType) => {
             setTodo(todos => {
                 todos[todos.findIndex(todo =>
                     todo.id === id)].done = event.target.checked; // Interface ChangeEvent has "target" property
-                return todos;
+                return [...todos];
             });
         }
 
