@@ -10,17 +10,13 @@ const Item = ({id, name, done}: TodoType) => {
         () => setMouseState(flag);
 
     const handleCheck = (id: string) =>
-        (event: ChangeEvent<HTMLInputElement>) => {
-            setTodo(todos => {
-                todos[todos.findIndex(todo =>
-                    todo.id === id)].done = event.target.checked; // Interface ChangeEvent has "target" property
-                return [...todos];
-            });
-        }
+        (event: ChangeEvent<HTMLInputElement>) =>
+            setTodo(todos =>
+                todos.map(todo => todo.id === id ? {...todo, done: event.target.checked} : todo));
 
     const handleClick = (id: string) =>
         () => {
-            if(window.confirm('Are u sure to delete this Todo?')) {
+            if (window.confirm('Are u sure to delete this Todo?')) {
                 setTodo(todos => todos.filter(todo => todo.id !== id));
             }
         }
