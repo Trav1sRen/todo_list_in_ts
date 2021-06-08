@@ -10,15 +10,12 @@ export type TodoType = {
     done: boolean
 };
 
-export const TodoContext = createContext<{
+type ContextType = {
     todos: TodoType[],
     setTodo: Dispatch<SetStateAction<TodoType[]>>
-}>({
-        todos: [],
-        setTodo: () => {
-        }
-    }
-);
+};
+
+export const TodoContext = createContext<ContextType>({} as ContextType);
 
 const App = () => {
     const [todos, setTodo] = useState<TodoType[]>([]);
