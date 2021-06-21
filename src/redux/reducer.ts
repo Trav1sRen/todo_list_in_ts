@@ -1,23 +1,41 @@
 import {Reducer} from 'redux';
 import {TodoType} from "../App";
-import {TodoAction} from "./action";
 import {TodoActionType} from "./actionType";
+import {AddTodoAction, DeleteTodoAction, UpdateAllTodoStatusAction, UpdateTodoStatusAction} from "./action";
 
-const todoListReducer: Reducer<TodoType[], TodoAction> = (preTodos = [], action) => {
-    const {todos, type} = action;
+const todoListReducer: Reducer<TodoType[],
+    AddTodoAction | DeleteTodoAction | UpdateTodoStatusAction | UpdateAllTodoStatusAction> =
+    (preTodos = [], action) => {
+        const {type} = action;
 
-    switch (type) {
-        case TodoActionType.ADD:
-            return [...todos, ...preTodos];
-        case TodoActionType.UPDATE:
-            return preTodos.map(preTodo => todos.map(todo => todo.id).includes(preTodo.id) ?
-                todos.find(todo => todo.id === preTodo.id) as TodoType : preTodo);
-        case TodoActionType.DELETE:
-            return preTodos.filter(todo =>
-                !todos.map(todo => todo.id).includes(todo.id));
-        default:
-            return preTodos;
+        switch (type) {
+            case TodoActionType.ADD_TODO: {
+                const {todo} = action as AddTodoAction;
+                return [todo, ...preTodos];
+            }
+
+            case TodoActionType.UPDATE_TODO_STATUS: {
+                const {id, done} = action as UpdateTodoStatusAction;
+                return preTodos.map(todo => todo.id === id ? {...todo, done} : todo);
+            }
+
+            case TodoActionType.UPDATE_ALL_TODO_STATUS: {
+                const {done} = action as UpdateAllTodoStatusAction;
+                return preTodos.map(todo => ({...todo, done}));
+            }
+
+            case TodoActionType.DELETE_TODO: {
+                const {id} = action as DeleteTodoAction;
+                return preTodos.filter(todo => todo.id !== id);
+            }
+
+            case TodoActionType.DELETE_DONE_TODOS: {
+                return preTodos.filter(todo => !todo.done);
+            }
+
+            default:
+                return preTodos;
+        }
     }
-}
 
 export default todoListReducer;

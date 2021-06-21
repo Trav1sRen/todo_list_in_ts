@@ -2,11 +2,11 @@ import './index.css';
 import {nanoid} from "nanoid";
 import React, {FC, KeyboardEvent} from 'react';
 import {connect} from 'react-redux';
-import {addTodoAction, TodoAction} from "../../redux/action";
+import {AddTodoAction, addTodoAction} from "../../redux/action";
 import {ActionCreator} from "redux";
 
 interface IProps {
-    addTodo: ActionCreator<TodoAction>
+    addTodo: ActionCreator<AddTodoAction>
 }
 
 const Header = ({addTodo}: IProps) => {
@@ -20,11 +20,11 @@ const Header = ({addTodo}: IProps) => {
                 return;
             }
 
-            addTodo([{
+            addTodo({
                 id: nanoid(),
                 name: val,
                 done: false
-            }]);
+            });
 
             event.currentTarget.value = '';
         }

@@ -2,21 +2,40 @@ import {Action, ActionCreator} from "redux";
 import {TodoActionType} from "./actionType";
 import {TodoType} from "../App";
 
-interface TodoAction extends Action<TodoActionType> {
-    todos: TodoType[]
+interface AddTodoAction extends Action<TodoActionType> {
+    todo: TodoType
 }
 
-const addTodoAction: ActionCreator<TodoAction> =
-    (todos: TodoType[]) =>
-        ({type: TodoActionType.ADD, todos});
+interface DeleteTodoAction extends Action<TodoActionType> {
+    id: string
+}
 
-const deleteTodoAction: ActionCreator<TodoAction> =
-    (todos: TodoType[]) =>
-        ({type: TodoActionType.DELETE, todos});
+interface UpdateTodoStatusAction extends Action<TodoActionType> {
+    id: string,
+    done: boolean
+}
 
-const updateTodoAction: ActionCreator<TodoAction> =
-    (todos: TodoType[]) =>
-        ({type: TodoActionType.UPDATE, todos});
+interface UpdateAllTodoStatusAction extends Action<TodoActionType> {
+    done: boolean
+}
 
-export {addTodoAction, deleteTodoAction, updateTodoAction};
-export type {TodoAction};
+interface DeleteDoneTodosAction extends Action<TodoActionType> {
+}
+
+const addTodoAction: ActionCreator<AddTodoAction> =
+    (todo: TodoType) => ({type: TodoActionType.ADD_TODO, todo});
+
+const deleteTodoAction: ActionCreator<DeleteTodoAction> =
+    (id: string) => ({type: TodoActionType.DELETE_TODO, id});
+
+const updateTodoStatusAction: ActionCreator<UpdateTodoStatusAction> =
+    (id: string, done: boolean) => ({type: TodoActionType.UPDATE_TODO_STATUS, id, done});
+
+const updateAllTodoStatusAction: ActionCreator<UpdateAllTodoStatusAction> =
+    (done: boolean) => ({type: TodoActionType.UPDATE_ALL_TODO_STATUS, done});
+
+const deleteDoneTodosAction: ActionCreator<DeleteDoneTodosAction> =
+    () => ({type: TodoActionType.DELETE_DONE_TODOS});
+
+export {addTodoAction, deleteTodoAction, updateTodoStatusAction, updateAllTodoStatusAction, deleteDoneTodosAction};
+export type {AddTodoAction, DeleteTodoAction, UpdateTodoStatusAction, UpdateAllTodoStatusAction, DeleteDoneTodosAction};

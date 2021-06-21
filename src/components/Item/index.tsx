@@ -1,17 +1,17 @@
 import {TodoType} from "../../App";
 import React, {ChangeEvent, FC, useState} from "react";
 import "./index.css";
-import {deleteTodoAction, TodoAction, updateTodoAction} from "../../redux/action";
 import {connect} from "react-redux";
 import {ActionCreator} from "redux";
+import {DeleteTodoAction, deleteTodoAction, UpdateTodoStatusAction, updateTodoStatusAction} from "../../redux/action";
 
 interface IProps extends TodoType {
-    deleteTodo: ActionCreator<TodoAction>,
-    updateTodo: ActionCreator<TodoAction>
+    deleteTodo: ActionCreator<DeleteTodoAction>,
+    updateTodoStatus: ActionCreator<UpdateTodoStatusAction>
 }
 
-const Item = ({deleteTodo, updateTodo, ...todo}: IProps) => {
-    const {name, done} = todo;
+const Item = ({deleteTodo, updateTodoStatus, ...todo}: IProps) => {
+    const {id, name, done} = todo;
 
     const [mouseState, setMouseState] = useState<boolean>();
 
@@ -19,12 +19,12 @@ const Item = ({deleteTodo, updateTodo, ...todo}: IProps) => {
         () => setMouseState(flag);
 
     const handleCheck = (event: ChangeEvent<HTMLInputElement>) => {
-        updateTodo([{...todo, done: event.target.checked}]);
+        updateTodoStatus(id, event.target.checked);
     }
 
     const handleClick = () => {
         if (window.confirm('Are u sure to delete this Todo?')) {
-            deleteTodo([todo]);
+            deleteTodo(id);
         }
     }
 
@@ -44,7 +44,7 @@ const Item = ({deleteTodo, updateTodo, ...todo}: IProps) => {
 
 const mapDispatchToProps = {
     deleteTodo: deleteTodoAction,
-    updateTodo: updateTodoAction
+    updateTodoStatus: updateTodoStatusAction
 };
 
 export default connect(null, mapDispatchToProps)(Item as FC);
