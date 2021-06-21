@@ -1,8 +1,10 @@
 import './App.css';
-import React, {createContext, Dispatch, SetStateAction, useState} from 'react';
+import React from 'react';
 import Header from "./components/Header";
 import List from "./components/List";
 import Footer from "./components/Footer";
+import {Provider} from 'react-redux';
+import todoListStore from './redux/store'
 
 export type TodoType = {
     id: string,
@@ -10,31 +12,18 @@ export type TodoType = {
     done: boolean
 };
 
-export const TodoContext = createContext<{
-    todos: TodoType[],
-    setTodo: Dispatch<SetStateAction<TodoType[]>>
-}>({
-        todos: [],
-        setTodo: () => {
-        }
-    }
-);
-
 const App = () => {
-    const [todos, setTodo] = useState<TodoType[]>([]);
-
     return (
         <div className="todo-container">
             <div className="todo-wrap">
-                <TodoContext.Provider value={{todos, setTodo}}>
+                <Provider store={todoListStore}>
                     <Header/>
                     <List/>
                     <Footer/>
-                </TodoContext.Provider>
+                </Provider>
             </div>
         </div>
     );
 }
-
 
 export default App;

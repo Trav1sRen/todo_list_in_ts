@@ -1,19 +1,22 @@
-import React, {ChangeEvent, useContext} from 'react';
+import React, {ChangeEvent, FC} from 'react';
 import "./index.css";
-import {TodoContext} from "../../App";
+import {TodoType} from "../../App";
+import {deleteTodoAction, TodoAction, updateTodoAction} from "../../redux/action";
+import {connect} from "react-redux";
+import {ActionCreator} from "redux";
 
-const Footer = () => {
-    const {todos, setTodo} = useContext(TodoContext);
+interface IProps {
+    todos: TodoType[],
+    deleteTodo: ActionCreator<TodoAction>,
+    updateTodo: ActionCreator<TodoAction>
+}
 
+const Footer = ({deleteTodo, updateTodo, todos}: IProps) => {
     const handleCheck = (event: ChangeEvent<HTMLInputElement>) =>
-        setTodo(todos =>
-            todos.map(todo => {
-                return {...todo, done: event.target.checked}
-            }));
-
+        updateTodo(todos.map(todo => ({...todo, done: event.target.checked})));
 
     const handleClick = () => {
-        setTodo(todos => todos.filter(todo => !todo.done));
+        deleteTodo(todos.filter(todo => todo.done));
     }
 
     return (
@@ -31,4 +34,11 @@ const Footer = () => {
     );
 }
 
-export default Footer;
+const mapStateToProps = (todos: TodoType[]) => ({todos});
+
+const mapDispatchToProps = {
+    deleteTodo: deleteTodoAction,
+    updateTodo: updateTodoAction
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Footer as FC);

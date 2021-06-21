@@ -1,11 +1,15 @@
 import './index.css';
 import {nanoid} from "nanoid";
-import {TodoContext} from "../../App";
-import React, {KeyboardEvent, useContext} from 'react';
+import React, {FC, KeyboardEvent} from 'react';
+import {connect} from 'react-redux';
+import {addTodoAction, TodoAction} from "../../redux/action";
+import {ActionCreator} from "redux";
 
-const Header = () => {
-    const {setTodo} = useContext(TodoContext);
+interface IProps {
+    addTodo: ActionCreator<TodoAction>
+}
 
+const Header = ({addTodo}: IProps) => {
     const handleKeyUp = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             // This assignment is necessary!!!
@@ -16,11 +20,11 @@ const Header = () => {
                 return;
             }
 
-            setTodo(todos => [{
+            addTodo([{
                 id: nanoid(),
                 name: val,
                 done: false
-            }, ...todos]);
+            }]);
 
             event.currentTarget.value = '';
         }
@@ -33,4 +37,8 @@ const Header = () => {
     );
 }
 
-export default Header;
+const mapDispatchToProps = {
+    addTodo: addTodoAction
+};
+
+export default connect(null, mapDispatchToProps)(Header as FC);
