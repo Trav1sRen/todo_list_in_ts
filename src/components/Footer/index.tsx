@@ -1,27 +1,25 @@
-import React, {ChangeEvent, FC} from 'react';
+import React, {ChangeEvent} from 'react';
+import {Dispatch} from 'redux';
 import "./index.css";
 import {TodoType} from "../../App";
+import {useDispatch, useSelector} from "react-redux";
 import {
-    deleteDoneTodosAction,
     DeleteDoneTodosAction,
+    deleteDoneTodosAction,
     updateAllTodoStatusAction,
     UpdateAllTodoStatusAction
 } from "../../redux/action";
-import {connect} from "react-redux";
-import {ActionCreator} from "redux";
 
-interface IProps {
-    todos: TodoType[],
-    deleteDoneTodos: ActionCreator<DeleteDoneTodosAction>,
-    updateAllTodoStatus: ActionCreator<UpdateAllTodoStatusAction>
-}
+const Footer = () => {
+    const todos = useSelector<TodoType[], TodoType[]>(state => state);
 
-const Footer = ({deleteDoneTodos, updateAllTodoStatus, todos}: IProps) => {
+    const dispatch = useDispatch<Dispatch<DeleteDoneTodosAction | UpdateAllTodoStatusAction>>();
+
     const handleCheck = (event: ChangeEvent<HTMLInputElement>) =>
-        updateAllTodoStatus(event.target.checked);
+        dispatch(updateAllTodoStatusAction(event.target.checked));
 
     const handleClick = () => {
-        deleteDoneTodos();
+        dispatch(deleteDoneTodosAction());
     }
 
     return (
@@ -39,11 +37,4 @@ const Footer = ({deleteDoneTodos, updateAllTodoStatus, todos}: IProps) => {
     );
 }
 
-const mapStateToProps = (todos: TodoType[]) => ({todos});
-
-const mapDispatchToProps = {
-    deleteDoneTodos: deleteDoneTodosAction,
-    updateAllTodoStatus: updateAllTodoStatusAction
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Footer as FC);
+export default Footer;

@@ -1,19 +1,17 @@
-import React, {FC} from 'react';
+import React from 'react';
 import Item from "../Item";
 import './index.css';
 import {TodoType} from "../../App";
-import {connect} from "react-redux";
+import {useSelector} from "react-redux";
 
-interface IProps {
-    todos: TodoType[]
+const List = () => {
+    const todos = useSelector<TodoType[], TodoType[]>(state => state);
+
+    return (
+        <ul className="todo-main">
+            {todos.map(todo => <Item key={todo.id} {...todo}/>)}
+        </ul>
+    );
 }
 
-const List = ({todos}: IProps) => (
-    <ul className="todo-main">
-        {todos.map(todo => <Item key={todo.id} {...todo}/>)}
-    </ul>
-);
-
-const mapStateToProps = (todos: TodoType[]) => ({todos});
-
-export default connect(mapStateToProps, null)(List as FC);
+export default List;
