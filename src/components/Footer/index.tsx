@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import {ChangeEvent} from 'react';
 import {Dispatch} from 'redux';
 import "./index.css";
 import {TodoType} from "../../App";

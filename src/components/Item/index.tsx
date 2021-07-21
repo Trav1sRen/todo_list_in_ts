@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from "react";
+import {ChangeEvent, useState} from "react";
 import "./index.css";
 import {TodoType} from "../../App";
 import {useDispatch} from "react-redux";

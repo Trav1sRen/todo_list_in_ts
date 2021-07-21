@@ -1,6 +1,6 @@
 import './index.css';
 import {nanoid} from "nanoid";
-import React, {KeyboardEvent} from 'react';
+import {KeyboardEvent} from 'react';
 import {useDispatch} from "react-redux";
 import {Dispatch} from "redux";
 import {addTodoAction, AddTodoAction} from "../../redux/action";
