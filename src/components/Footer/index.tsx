@@ -1,26 +1,17 @@
 import {ChangeEvent} from 'react';
-import {Dispatch} from 'redux';
 import "./index.css";
+import {useRecoilState} from "recoil";
 import {TodoType} from "../../App";
-import {useDispatch, useSelector} from "react-redux";
-import {
-    DeleteDoneTodosAction,
-    deleteDoneTodosAction,
-    updateAllTodoStatusAction,
-    UpdateAllTodoStatusAction
-} from "../../redux/action";
+import {todoListState} from "../../recoil/atom";
 
 const Footer = () => {
-    const todos = useSelector<TodoType[], TodoType[]>(state => state);
+    const [todos, setTodos] = useRecoilState<TodoType[]>(todoListState);
 
-    const dispatch = useDispatch<Dispatch<DeleteDoneTodosAction | UpdateAllTodoStatusAction>>();
+    const handleCheck = ({target: {checked}}: ChangeEvent<HTMLInputElement>) =>
+        setTodos(todos => todos.map(todo => ({...todo, done: checked})));
 
-    const handleCheck = (event: ChangeEvent<HTMLInputElement>) =>
-        dispatch(updateAllTodoStatusAction(event.target.checked));
-
-    const handleClick = () => {
-        dispatch(deleteDoneTodosAction());
-    }
+    const handleClick = () =>
+        setTodos(todos => todos.filter(({done}) => !done));
 
     return (
         <div className="todo-footer">

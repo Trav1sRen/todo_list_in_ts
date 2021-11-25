@@ -1,13 +1,13 @@
 import './index.css';
 import {nanoid} from "nanoid";
 import {KeyboardEvent} from 'react';
-import {useDispatch} from "react-redux";
-import {Dispatch} from "redux";
-import {addTodoAction, AddTodoAction} from "../../redux/action";
+import {useRecoilState} from "recoil";
+import {todoListState} from "../../recoil/atom";
+import {TodoType} from "../../App";
 
 
 const Header = () => {
-    const dispatch = useDispatch<Dispatch<AddTodoAction>>()
+    const [, setTodos] = useRecoilState<TodoType[]>(todoListState);
 
     const handleKeyUp = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
@@ -19,15 +19,15 @@ const Header = () => {
                 return;
             }
 
-            dispatch(addTodoAction({
+            setTodos(todos => [{
                 id: nanoid(),
                 name: val,
                 done: false
-            }));
+            }, ...todos])
 
             event.currentTarget.value = '';
         }
-    }
+    };
 
     return (
         <div className="todo-header">

@@ -1,10 +1,11 @@
 import Item from "../Item";
 import './index.css';
+import {useRecoilValue} from "recoil";
 import {TodoType} from "../../App";
-import {useSelector} from "react-redux";
+import {todoListState} from "../../recoil/atom";
 
 const List = () => {
-    const todos = useSelector<TodoType[], TodoType[]>(state => state);
+    const todos = useRecoilValue<TodoType[]>(todoListState);
 
     return (
         <ul className="todo-main">

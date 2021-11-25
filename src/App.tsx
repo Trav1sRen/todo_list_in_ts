@@ -2,8 +2,7 @@ import './App.css';
 import Header from "./components/Header";
 import List from "./components/List";
 import Footer from "./components/Footer";
-import {Provider} from 'react-redux';
-import todoListStore from './redux/store'
+import {RecoilRoot} from "recoil";
 
 export type TodoType = {
     id: string,
@@ -15,11 +14,11 @@ const App = () => {
     return (
         <div className="todo-container">
             <div className="todo-wrap">
-                <Provider store={todoListStore}>
+                <RecoilRoot>
                     <Header/>
                     <List/>
                     <Footer/>
-                </Provider>
+                </RecoilRoot>
             </div>
         </div>
     );

@@ -1,28 +1,27 @@
 import {ChangeEvent, useState} from "react";
 import "./index.css";
 import {TodoType} from "../../App";
-import {useDispatch} from "react-redux";
-import {Dispatch} from "redux";
-import {deleteTodoAction, DeleteTodoAction, updateTodoStatusAction, UpdateTodoStatusAction} from "../../redux/action";
+import {useRecoilState} from "recoil";
+import {todoListState} from "../../recoil/atom";
 
 
 const Item = ({id, name, done}: TodoType) => {
-    const dispatch = useDispatch<Dispatch<UpdateTodoStatusAction | DeleteTodoAction>>();
+    const [, setTodos] = useRecoilState<TodoType[]>(todoListState);
 
     const [mouseState, setMouseState] = useState<boolean>();
 
     const handleMouse = (flag: boolean) =>
         () => setMouseState(flag);
 
-    const handleCheck = (event: ChangeEvent<HTMLInputElement>) => {
-        dispatch(updateTodoStatusAction(id, event.target.checked));
-    }
+    const handleCheck = ({target: {checked}}: ChangeEvent<HTMLInputElement>) =>
+        setTodos(todos =>
+            todos.map(todo =>
+                todo.id === id ?
+                    {...todo, done: checked} : todo));
 
-    const handleClick = () => {
-        if (window.confirm('Are u sure to delete this Todo?')) {
-            dispatch(deleteTodoAction(id));
-        }
-    }
+    const handleClick = () =>
+        window.confirm('Are u sure to delete this Todo?') &&
+        setTodos(todos => todos.filter(todo => todo.id !== id));
 
     return (
         <li style={{backgroundColor: mouseState ? '#ddd' : 'white'}} onMouseLeave={handleMouse(false)}
@@ -37,6 +36,5 @@ const Item = ({id, name, done}: TodoType) => {
         </li>
     );
 }
-
 
 export default Item;
