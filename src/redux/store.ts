@@ -1,4 +1,9 @@
-import {createStore} from 'redux'
-import todoListReducer from "./reducer";
+import { combineReducers, createStore } from "redux";
+import { Todo } from "../App";
+import { todosReducer } from "./reducer";
 
-export default createStore(todoListReducer);
+export interface IRootState {
+  todos: Todo[];
+}
+
+export default createStore(combineReducers({ todos: todosReducer }));
