@@ -3,13 +3,7 @@ import "./App.css";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import List from "./components/List";
-import store from "./redux/store";
-
-export interface Todo {
-  id: string;
-  name: string;
-  done: boolean;
-}
+import { store } from "./redux/store";
 
 const App = () => {
   return (

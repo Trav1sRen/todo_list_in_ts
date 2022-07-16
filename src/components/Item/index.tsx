@@ -1,30 +1,22 @@
 import { ChangeEvent, useState } from "react";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
-import { Todo } from "../../App";
-import {
-  deleteTodoAction,
-  DeleteTodoAction,
-  updateTodoStatusAction,
-  UpdateTodoStatusAction,
-} from "../../redux/action";
+import { useAppDispatch } from "../../redux/hooks";
+import { deleteTodo, Todo, updateTodoStatus } from "../../redux/slice";
 import "./index.css";
 
 const Item = ({ id, name, done }: Todo) => {
-  const dispatch =
-    useDispatch<Dispatch<UpdateTodoStatusAction | DeleteTodoAction>>();
+  const dispatch = useAppDispatch();
 
   const [mouseState, setMouseState] = useState<boolean>();
 
   const handleMouse = (flag: boolean) => () => setMouseState(flag);
 
   const handleCheck = (event: ChangeEvent<HTMLInputElement>) => {
-    dispatch(updateTodoStatusAction(id, event.target.checked));
+    dispatch(updateTodoStatus({ id, done: event.target.checked }));
   };
 
   const handleClick = () => {
     if (window.confirm("Are u sure to delete this Todo?")) {
-      dispatch(deleteTodoAction(id));
+      dispatch(deleteTodo({ id }));
     }
   };
 
@@ -36,7 +28,7 @@ const Item = ({ id, name, done }: Todo) => {
     >
       <label>
         <input onChange={handleCheck} type="checkbox" checked={done} />
-        <span>{name}</span>
+        <span style={{ marginLeft: "15px" }}>{name}</span>
       </label>
       <button
         onClick={handleClick}

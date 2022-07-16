@@ -1,27 +1,17 @@
 import { ChangeEvent } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
-import { Todo } from "../../App";
-import {
-  DeleteDoneTodosAction,
-  deleteDoneTodosAction,
-  updateAllTodoStatusAction,
-  UpdateAllTodoStatusAction,
-} from "../../redux/action";
-import { IRootState } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { deleteDoneTodos, updateAllTodoStatus } from "../../redux/slice";
 import "./index.css";
 
 const Footer = () => {
-  const todos = useSelector<IRootState, Todo[]>(({ todos }) => todos);
-
-  const dispatch =
-    useDispatch<Dispatch<DeleteDoneTodosAction | UpdateAllTodoStatusAction>>();
+  const todos = useAppSelector(({ todoReducer: { todos } }) => todos);
+  const dispatch = useAppDispatch();
 
   const handleCheck = (event: ChangeEvent<HTMLInputElement>) =>
-    dispatch(updateAllTodoStatusAction(event.target.checked));
+    dispatch(updateAllTodoStatus({ done: event.target.checked }));
 
   const handleClick = () => {
-    dispatch(deleteDoneTodosAction());
+    dispatch(deleteDoneTodos());
   };
 
   return (

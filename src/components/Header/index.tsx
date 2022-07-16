@@ -1,12 +1,11 @@
 import { nanoid } from "nanoid";
 import { KeyboardEvent } from "react";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
-import { addTodoAction, AddTodoAction } from "../../redux/action";
+import { useAppDispatch } from "../../redux/hooks";
+import { addTodo } from "../../redux/slice";
 import "./index.css";
 
 const Header = () => {
-  const dispatch = useDispatch<Dispatch<AddTodoAction>>();
+  const dispatch = useAppDispatch();
 
   const handleKeyUp = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
@@ -19,10 +18,12 @@ const Header = () => {
       }
 
       dispatch(
-        addTodoAction({
-          id: nanoid(),
-          name: val,
-          done: false,
+        addTodo({
+          newTodo: {
+            id: nanoid(),
+            name: val,
+            done: false,
+          },
         })
       );
 
