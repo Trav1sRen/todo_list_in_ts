@@ -14,38 +14,36 @@ const todosReducer: Reducer<
   | DeleteTodoAction
   | UpdateTodoStatusAction
   | UpdateAllTodoStatusAction
-> = (lastState = [], action) => {
+> = (state = [], action) => {
   const { type } = action;
 
   switch (type) {
     case TodoActionType.ADD_TODO: {
       const { todo } = action as AddTodoAction;
-      return [todo, ...lastState];
+      return [todo, ...state];
     }
 
     case TodoActionType.UPDATE_TODO_STATUS: {
       const { id, done } = action as UpdateTodoStatusAction;
-      return lastState.map((todo) =>
-        todo.id === id ? { ...todo, done } : todo
-      );
+      return state.map((todo) => (todo.id === id ? { ...todo, done } : todo));
     }
 
     case TodoActionType.UPDATE_ALL_TODO_STATUS: {
       const { done } = action as UpdateAllTodoStatusAction;
-      return lastState.map((todo) => ({ ...todo, done }));
+      return state.map((todo) => ({ ...todo, done }));
     }
 
     case TodoActionType.DELETE_TODO: {
       const { id } = action as DeleteTodoAction;
-      return lastState.filter((todo) => todo.id !== id);
+      return state.filter((todo) => todo.id !== id);
     }
 
     case TodoActionType.DELETE_DONE_TODOS: {
-      return lastState.filter((todo) => !todo.done);
+      return state.filter((todo) => !todo.done);
     }
 
     default:
-      return lastState;
+      return state;
   }
 };
 
